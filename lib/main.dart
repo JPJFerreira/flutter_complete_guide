@@ -5,6 +5,10 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  void answerQuestion() {
+    print('Answer chosen !');
+  }
+
   @override
   Widget build(BuildContext context) {
     var questions = [
@@ -22,16 +26,12 @@ class MyApp extends StatelessWidget {
             ElevatedButton(
               // Like Raised Button
               child: Text('Answer 1'),
-              onPressed: () {
-                print('Answer 1 chosen!');
-              },
+              onPressed: answerQuestion,
             ),
             ElevatedButton(
               // Like Raised Button
               child: Text('Answer 2'),
-              onPressed: () {
-                print('Answer 2 chosen!');
-              },
+              onPressed: () => print('Answer 2 chosen!'),
             ),
             ElevatedButton(
               // Like Raised Button
