@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import './question.dart';
+import './quiz.dart';
 import './answer.dart';
+import './result.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,25 +17,49 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final questions = const [
+  final _questions = const [
     {
       'questionText': 'What\'s your favorite color?',
-      'answers': ['Red', 'Green', 'Blue']
+      'answers': [
+        {'text': 'Red', 'score': 10},
+        {'text': 'Green', 'score': 3},
+        {'text': 'Blue', 'score': 1}
+      ]
     },
     {
       'questionText': 'What\'s your favorite animal?',
-      'answers': ['Dog', 'Cat', 'Rabbit', 'Lion']
+      'answers': [
+        {'text': 'Dog', 'score': 10},
+        {'text': 'Cat', 'score': 3},
+        {'text': 'Rabbit', 'score': 6},
+        {'text': 'Lion', 'score': 7}
+      ]
     },
     {
       'questionText': 'What\'s your favorite instructor?',
-      'answers': ['Max', 'João', 'Max']
+      'answers': [
+        {'text': 'Max', 'score': 10},
+        {'text': 'Max', 'score': 3},
+        {'text': 'João', 'score': 1}
+      ]
     }
   ];
 
   var _questionIndex = 0;
+  var _totalScore = 0;
 
-  void _answerQuestion() {
-    // if (_questionIndex < questions.length - 1) {
+  void _resetQuiz() {
+    setState(() {
+      _questionIndex = 0;
+      _totalScore = 0;
+    });
+  }
+
+  void _answerQuestion(int score) {
+    // if (_questionIndex < _questions.length - 1) {
+
+    _totalScore += score;
+
     setState(() {
       _questionIndex++;
     });
@@ -45,23 +71,16 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('My Fisrt App'),
-        ),
-        body: _questionIndex < questions.length
-            ? Column(
-                children: [
-                  Question(questions[_questionIndex]['questionText'] as String),
-                  ...(questions[_questionIndex]['answers'] as List<String>)
-                      .map((answer) {
-                    return Answer(_answerQuestion, answer);
-                  }).toList()
-                ],
-              )
-            : Center(
-                child: Text('You\'ve reached the end of the quiz!'),
-              ),
-      ),
+          appBar: AppBar(
+            title: Text('My Fisrt App'),
+          ),
+          body: _questionIndex < _questions.length
+              ? Quiz(
+                  answerQuestion: _answerQuestion,
+                  questionIndex: _questionIndex,
+                  questions: _questions,
+                )
+              : Result(_totalScore, _resetQuiz)),
     );
   }
 }
